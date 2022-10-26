@@ -55,7 +55,7 @@ function App() {
       display:'flex', 
       alignItems:'center', 
       justfiyContent:'center',
-      height:'100px',
+      height:'500px',
       width:'auto'
     },
     ResponsiveImage:{
@@ -82,9 +82,10 @@ function App() {
     .then(response => response.text())
     .then(result => {
       const obj = JSON.parse(result)
+      
       if(obj.result.includes('https://')) {
+        downloadImage()
         setImage(obj.result)
-        FileSaver.saveAs(image, "image.jpg");
         setTimeout(() => {
           isLoading(false)
         }, 1000)
@@ -93,24 +94,30 @@ function App() {
     .catch(error => console.error('an error', error), isLoading(false) );
   }
 
+  const downloadImage = async () => {
+    return
+  }
+
   return (
     <Container sx={styles.Container}>
       <Box sx={styles.ImageContainer}>
-        {!image ?
-        <CircularProgress size={100} disableShrink sx={{animationDuration: '550ms', color:'gray'}} thickness={4} variant="determinate" value={percentage} /> 
+        {!image && loading ?
+        <CircularProgress size={100} disableShrink sx={{animationDuration: '550ms', color:'gray'}} thickness={4}  value={percentage} /> 
         : (
-          <Box 
-              sx={styles.ResponsiveImage}
-              component="img" 
-              src={image}
-              width="auto"
-              height={100}
-          />
+          <a id="image-link" href={image} download target="_b">
+            <Box 
+                sx={styles.ResponsiveImage}
+                component="img" 
+                src={image}
+                width="auto"
+                height={500}
+            />
+          </a>
         )}
       </Box>
       <Paper sx={styles.FlexBox} elevation={0}>
         <OutlinedInput onChange={onChangeHandler} style={styles.ImageUpload} type="file"/>
-        <LinearProgress sx={{height:'10px', borderRadius:'30px'}} variant="determinate" value={percentage} />
+        {loading && ( <LinearProgress sx={{height:'10px', borderRadius:'30px'}} value={percentage}  /> )}
         {/* <Button 
           sx={{fontSize:'1.2em'}} 
           size="large" startIcon={loading ? <CircularProgress /> : <UploadFileIcon />} 
