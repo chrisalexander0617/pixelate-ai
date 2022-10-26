@@ -54,12 +54,12 @@ function App() {
     ImageConatiner:{ 
       display:'flex', 
       alignItems:'center', 
-      justfiyContent:'center'
+      justfiyContent:'center',
+      height:'100px',
+      width:'auto'
     },
     ResponsiveImage:{
       margin:'0 auto', 
-      height:'600px', 
-      width:'autp',
       objectFit:'contain',
       display:{ xs:'none', lg:'block' }
     }
@@ -95,25 +95,29 @@ function App() {
 
   return (
     <Container sx={styles.Container}>
-      {image && (
-        <Box 
-            sx={styles.ResponsiveImage}
-            component="img" 
-            src={image}
-            width="100%"
-            height="100%"
-        />
-      )}
+      <Box sx={styles.ImageContainer}>
+        {!image ?
+        <CircularProgress size={100} disableShrink sx={{animationDuration: '550ms', color:'gray'}} thickness={4} variant="determinate" value={percentage} /> 
+        : (
+          <Box 
+              sx={styles.ResponsiveImage}
+              component="img" 
+              src={image}
+              width="auto"
+              height={100}
+          />
+        )}
+      </Box>
       <Paper sx={styles.FlexBox} elevation={0}>
         <OutlinedInput onChange={onChangeHandler} style={styles.ImageUpload} type="file"/>
         <LinearProgress sx={{height:'10px', borderRadius:'30px'}} variant="determinate" value={percentage} />
-        <Button 
+        {/* <Button 
           sx={{fontSize:'1.2em'}} 
           size="large" startIcon={loading ? <CircularProgress /> : <UploadFileIcon />} 
           disabled={loading ? true : false}
           onClick={onChangeHandler} 
           variant="contained"
-        >Upload</Button>
+        >Upload</Button> */}
         <Typography variant="body1" component="div">{result}</Typography>
         <code>Developed by Digyt.co</code>
       </Paper>
